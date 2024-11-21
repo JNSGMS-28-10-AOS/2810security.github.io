@@ -1,0 +1,76 @@
+/* 网站背景 */
+
+body {
+    background-image: url('https://gcore.jsdelivr.net/gh/YubaC/2810security.github.io@latest/images/desalination2.jpg');
+}
+
+
+/* 网站头部的安全局logo和标语 */
+
+.titleimage {
+    margin: auto;
+    display: block;
+    width: 1000;
+    height: 200;
+    padding: 10px;
+    margin: 30px, 0px, 0px;
+}
+
+.titleimage2 {
+    display: none;
+}
+
+.titletext {
+    text-align: center;
+    margin: 10px, 0px, 0px;
+}
+
+
+/* 导航栏 */
+
+header table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+
+/* 所有表格的边框 */
+
+table,
+th,
+td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+
+/* 字体大小 */
+
+.fontsize_4 {
+    font-size: 18px;
+}
+
+.fontsize_6 {
+    font-size: 22px;
+}
+
+
+/* ----------------------
+  屏幕宽度在599px以下时使用（用于智能手机）
+ ---------------------- */
+
+@media only screen and (max-width: 599px) {
+    html,
+    .fontsize_4,
+    .fontsize_6 {
+        font-size: 1em;
+    }
+    .titleimage {
+        width: 100%;
+        display: none;
+    }
+    .titleimage2 {
+        width: 100%;
+        display: block;
+    }
+}

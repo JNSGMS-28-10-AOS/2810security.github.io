@@ -1,0 +1,84 @@
+# 负责检查pull reqests里html文件的links是否都有效
+name: Check HTML Links
+# 触发 workflow 的事件
+on:
+  # 有pull request时触发
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  push:
+  workflow_dispatch:
+
+jobs:
+  Check-HTML-Links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Check links...
+        run: |
+          cd tools/Check-Links
+          pip install -r checkLinks-requirements.txt
+          python checkLinks.py
+
+      - name: Save success output as file
+        if: ${{ success()}}
+        run: |
+          mkdir -p artifacts
+          cat > artifacts/message.md <<EOF
+          # HTML Links Test Report
+
+          Hi there!
+
+          Thank you for your Pull Request! We're happy to inform you that you have already passed all the tests.
+
+          Please wait for the review. Thank you again for your contribution.
+          EOF
+
+      - name: Read bad links
+        if: ${{ failure() }}
+        id: errors
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./checkLinks.md
+
+      - name: Echo bad links
+        if: ${{ failure() }}
+        run: echo "${{ steps.errors.outputs.content }}"
+
+      - name: Save failure output as file
+        if: ${{ failure() }}
+        run: |
+          mkdir -p artifacts
+          cat > artifacts/message.md <<EOF
+          # HTML Links Test Report
+
+          Hi there!
+
+          Thank you for your Pull Request! However, we're sorry to inform you that the following illegal relative connection still exists within your Pull Request: 
+
+          ${{ steps.errors.outputs.content }}
+
+          Please fix these errors. Thank you again for your contribution.
+          EOF
+
+      - name: Save PR message as artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-comment
+          path: artifacts

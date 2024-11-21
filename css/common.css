@@ -1,0 +1,12 @@
+body {
+    background-image: url("https://gcore.jsdelivr.net/gh/YubaC/2810security.github.io@latest/images/desalination2.jpg");
+}
+
+hr {
+    opacity: 1 !important;
+}
+
+/* For title */
+.title {
+    font-family: "华文中宋", "宋体", "serif";
+}
